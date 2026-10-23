@@ -5,7 +5,7 @@ module PowerOffice
   #
   # @example
   #   onboarding = PowerOffice::Onboarding.new(configuration: Rails.configuration.x.power_office)
-  #   onboarding.initiate(redirect_uri: "https://servos.dk/power_office/onboarding").data["TemporaryUrl"]
+  #   onboarding.initiate(redirect_uri: "https://servos.dk/integrations/power-office/callback").data["TemporaryUrl"]
   #   # PowerOffice sends the user back to the redirect URI with a token
   #   onboarding.finalize(token).data["OnboardedClientsInformation"]
   #

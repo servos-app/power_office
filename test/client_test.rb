@@ -65,6 +65,20 @@ class PowerOffice::ClientTest < Minitest::Test
     assert_raises(PowerOffice::Errors::NotFoundError) { client.get("/Customers/9") }
   end
 
+  def test_integration_information_reads_the_clients_own_record
+    respond_with_token.respond_with(body: {ClientId: "8d1c", ClientName: "ABC AS", AllowSendInvoice: true})
+
+    assert_equal "8d1c", client.integration_information.data["ClientId"]
+    assert_request "GET", "#{API_URL}/ClientIntegrationInformation"
+  end
+
+  def test_remove_integration_deletes_the_client_key
+    respond_with_token.respond_with(status: 204)
+
+    assert client.remove_integration.success?
+    assert_request "DELETE", "#{API_URL}/Offboarding/RemoveIntegration"
+  end
+
   def test_post_sends_a_json_body
     respond_with_token.respond_with(status: 201, body: '{"Id":1}')
 

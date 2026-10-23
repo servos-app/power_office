@@ -8,6 +8,10 @@ module PowerOffice
       build(Net::HTTP::Get, configuration, uri)
     end
 
+    def self.delete(configuration, path)
+      build(Net::HTTP::Delete, configuration, api_uri(configuration, path))
+    end
+
     def self.post(configuration, path, body:)
       request = build(Net::HTTP::Post, configuration, api_uri(configuration, path))
       request["Content-Type"] = "application/json"

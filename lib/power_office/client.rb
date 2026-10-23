@@ -36,12 +36,25 @@ module PowerOffice
       @vat_codes ||= Resources::VatCodes.new(self)
     end
 
+    def integration_information
+      get("/ClientIntegrationInformation")
+    end
+
+    # Revokes this client key, so the customer has to onboard again to reconnect.
+    def remove_integration
+      delete("/Offboarding/RemoveIntegration")
+    end
+
     def get(path, params: {})
       perform(Request.get(configuration, path, params: params))
     end
 
     def post(path, body:)
       perform(Request.post(configuration, path, body: body))
+    end
+
+    def delete(path)
+      perform(Request.delete(configuration, path))
     end
 
     private
