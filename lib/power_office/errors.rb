@@ -16,6 +16,10 @@ module PowerOffice
 
     class NotFoundError < Error; end
 
+    # PowerOffice answers 409 when a voucher's ExternalImportReference is already
+    # on the client.
+    class ConflictError < Error; end
+
     class ValidationError < Error
       def errors
         response.validation_errors
@@ -39,6 +43,7 @@ module PowerOffice
       401 => AuthenticationError,
       403 => ForbiddenError,
       404 => NotFoundError,
+      409 => ConflictError,
       429 => RateLimitError
     }.freeze
 
