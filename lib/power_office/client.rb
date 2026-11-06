@@ -8,6 +8,10 @@ module PowerOffice
       @clock = clock
     end
 
+    def account_transactions
+      @account_transactions ||= Resources::AccountTransactions.new(self)
+    end
+
     def customers
       @customers ||= Resources::Customers.new(self)
     end
@@ -36,8 +40,17 @@ module PowerOffice
       @vat_codes ||= Resources::VatCodes.new(self)
     end
 
+    def vouchers
+      @vouchers ||= Resources::Vouchers.new(self)
+    end
+
     def integration_information
       get("/ClientIntegrationInformation")
+    end
+
+    # The client's company details, its organization number among them.
+    def organization_settings
+      get("/OrganizationSettings")
     end
 
     # Revokes this client key, so the customer has to onboard again to reconnect.

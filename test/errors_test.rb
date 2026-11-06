@@ -11,7 +11,8 @@ class PowerOffice::ErrorsTest < Minitest::Test
       404 => PowerOffice::Errors::NotFoundError,
       429 => PowerOffice::Errors::RateLimitError,
       503 => PowerOffice::Errors::ServerError,
-      409 => PowerOffice::Errors::Error
+      409 => PowerOffice::Errors::ConflictError,
+      418 => PowerOffice::Errors::Error
     }.each do |status, error_class|
       error = PowerOffice::Errors.from(response(status, '{"Title":"Nope"}'))
 

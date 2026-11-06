@@ -72,6 +72,13 @@ class PowerOffice::ClientTest < Minitest::Test
     assert_request "GET", "#{API_URL}/ClientIntegrationInformation"
   end
 
+  def test_organization_settings_reads_the_clients_company
+    respond_with_token.respond_with(body: {Name: "ABC AS", OrganizationNumber: "923609016"})
+
+    assert_equal "923609016", client.organization_settings.data["OrganizationNumber"]
+    assert_request "GET", "#{API_URL}/OrganizationSettings"
+  end
+
   def test_remove_integration_deletes_the_client_key
     respond_with_token.respond_with(status: 204)
 
