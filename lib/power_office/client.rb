@@ -28,12 +28,20 @@ module PowerOffice
       @journal_entry_vouchers ||= Resources::JournalEntryVouchers.new(self)
     end
 
+    def outgoing_invoices
+      @outgoing_invoices ||= Resources::OutgoingInvoices.new(self)
+    end
+
     def products
       @products ||= Resources::Products.new(self)
     end
 
     def projects
       @projects ||= Resources::Projects.new(self)
+    end
+
+    def sales_orders
+      @sales_orders ||= Resources::SalesOrders.new(self)
     end
 
     def vat_codes

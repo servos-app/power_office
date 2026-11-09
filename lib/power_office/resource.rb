@@ -9,13 +9,17 @@ module PowerOffice
     end
 
     def list(page_number: nil, page_size: nil, **filters)
-      client.get(resource_path, params: {PageNumber: page_number, PageSize: page_size, **filters}.compact)
+      get_page(resource_path, page_number: page_number, page_size: page_size, **filters)
     end
 
     protected
 
     def resource_path
       raise NotImplementedError, "Subclass must implement #resource_path"
+    end
+
+    def get_page(path, page_number: nil, page_size: nil, **filters)
+      client.get(path, params: {PageNumber: page_number, PageSize: page_size, **filters}.compact)
     end
   end
 end
