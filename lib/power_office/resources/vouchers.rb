@@ -17,6 +17,25 @@ module PowerOffice
     #       {AccountId: sales_id, CurrencyAmount: -1000, PostingDate: "2026-10-03", VatId: high_rate_id}
     #     ]
     #   )
+    #
+    # Invoices issued outside Go are posted as outgoing invoice vouchers: the
+    # gross CurrencyAmount lands on the customer's sub-ledger account
+    # (CustomerAccountId, not the customer's Id), and the lines, which must sum
+    # to it, carry the sales postings with their VAT codes. Credit notes take
+    # negative amounts. InvoiceNo must be unique on the client. To have Go
+    # issue and deliver the invoice itself, use SalesOrders instead.
+    #
+    # @example
+    #   client.vouchers.create_outgoing_invoice_journal(
+    #     InvoiceNo: 1042,
+    #     VoucherDate: "2026-11-09",
+    #     DueDate: "2026-11-23",
+    #     CurrencyCode: "NOK",
+    #     CurrencyAmount: 1250,
+    #     CustomerAccountId: customer_account_id,
+    #     ExternalImportReference: "servos-invoice-1042",
+    #     VoucherLines: [{AccountId: sales_id, CurrencyAmount: 1250, VatId: high_rate_id}]
+    #   )
     class Vouchers < Resource
       def create_manual_journal(body)
         client.post("#{resource_path}/ManualJournals", body: body)
@@ -24,6 +43,22 @@ module PowerOffice
 
       def retrieve_manual_journal(id)
         client.get("#{resource_path}/ManualJournals/#{id}")
+      end
+
+      def create_outgoing_invoice_journal(body)
+        client.post("#{resource_path}/OutgoingInvoiceJournals", body: body)
+      end
+
+      def retrieve_outgoing_invoice_journal(id)
+        client.get("#{resource_path}/OutgoingInvoiceJournals/#{id}")
+      end
+
+      def create_outgoing_credit_note_journal(body)
+        client.post("#{resource_path}/OutgoingCreditNoteJournals", body: body)
+      end
+
+      def retrieve_outgoing_credit_note_journal(id)
+        client.get("#{resource_path}/OutgoingCreditNoteJournals/#{id}")
       end
 
       protected
